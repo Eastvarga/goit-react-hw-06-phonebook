@@ -1,6 +1,6 @@
 import { filterstyle, title } from "./styles.module.css";
 
-import { filterChange } from "../../redux/contacts/contacts-action";
+import actions from "../../redux/contacts/contacts-action";
 import { connect } from "react-redux";
 
 function FindInput({ onFilterChange, filter }) {
@@ -30,7 +30,7 @@ const mapStateToProps = ({ contacts: { filter } }) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     onFilterChange: (event) =>
-      dispatch(filterChange(event.currentTarget.value)),
+      dispatch(actions.filterChange(event.currentTarget.value)),
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(FindInput);
