@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
 
 import { addContact } from "../../redux/contacts/contacts-action";
-import { form, name, input, tel, button } from "./styles.module.css";
+import { form, nameStyle, input, tel, button } from "./styles.module.css";
 const INITIAL_STATE = {
   name: "",
   number: "",
@@ -28,11 +28,7 @@ class Form extends Component {
       this.reset();
       return;
     }
-    this.props.onAddContact({
-      id: uuidv4(),
-      name: this.state.name,
-      number: this.state.number,
-    });
+    this.props.onAddContact(this.state);
 
     this.reset();
   };
@@ -42,29 +38,30 @@ class Form extends Component {
     });
   };
   render() {
+    const { name, number } = this.state;
     return (
       <form className={form} onSubmit={this.handleSubmit}>
-        <label className={name}>
+        <label className={nameStyle}>
           Name
           <input
             className={input}
             // autocomplete="off"
             type="text"
             name="name"
-            value={this.state.name}
+            value={name}
             pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
             title="Имя может состоять только из букв, апострофа, тире и пробелов. Например Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan и т. п."
             required
             onChange={this.handleChange}
           />
         </label>
-        <label className={name}>
+        <label className={nameStyle}>
           📞
           <input
             className={tel}
             type="tel"
             name="number"
-            value={this.state.number}
+            value={number}
             pattern="(\+?( |-|\.)?\d{1,2}( |-|\.)?)?(\(?\d{3}\)?|\d{3})( |-|\.)?(\d{3}( |-|\.)?\d{4})"
             title="Номер телефона должен состоять из 11-12 цифр и может содержать цифры, пробелы, тире, пузатые скобки и может начинаться с +"
             required
@@ -85,10 +82,10 @@ const mapStateToProps = ({ contacts: { items } }) => {
 };
 const mapDispatchToProps = (dispatch) => {
   return {
-    onAddContact: ({ id, name, number }) =>
+    onAddContact: ({ name, number }) =>
       dispatch(
         addContact({
-          id,
+          id: uuidv4(),
           name,
           number,
         })
