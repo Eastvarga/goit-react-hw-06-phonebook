@@ -1,12 +1,20 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "modern-normalize/modern-normalize.css";
-
 import App from "./App";
+import { Provider } from "react-redux";
+import store from "./redux/store";
+// import store from "./redux/store";
+// import { myAction, myAction2 } from "./redux/actions";
+
+// console.log("store is: ", store);
+// console.log("store dispatch action is: ", store.dispatch(myAction(5)));
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Provider store={store}>
+      <App />
+    </Provider>
   </React.StrictMode>,
   document.getElementById("root")
 );
