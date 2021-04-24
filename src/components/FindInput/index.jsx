@@ -1,7 +1,8 @@
 import { Component } from "react";
 import { filter, title } from "./styles.module.css";
-import store from "../../redux/store";
-import { filterChange } from "../../redux/actions";
+
+import { filterChange } from "../../redux/contacts/contacts-action";
+import { connect } from "react-redux";
 class FindInput extends Component {
   state = {
     filter: "",
@@ -9,7 +10,8 @@ class FindInput extends Component {
   onChange = (event) => {
     const { name, value } = event.currentTarget;
     this.setState({ [name]: value });
-    store.dispatch(filterChange(value));
+    this.props.onFilterChange(value);
+    // store.dispatch(filterChange(value));
   };
 
   render() {
@@ -31,5 +33,14 @@ class FindInput extends Component {
     );
   }
 }
-
-export default FindInput;
+const mapStateToProps = ({ contacts: { filter } }) => {
+  return {
+    filter,
+  };
+};
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onFilterChange: (filter) => dispatch(filterChange(filter)),
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(FindInput);

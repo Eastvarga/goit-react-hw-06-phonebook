@@ -1,8 +1,8 @@
 import { Component } from "react";
 import { connect } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
-// import store from "../../redux/store";
-import { addContact } from "../../redux/actions";
+
+import { addContact } from "../../redux/contacts/contacts-action";
 import { form, name, input, tel, button } from "./styles.module.css";
 const INITIAL_STATE = {
   name: "",
@@ -23,10 +23,7 @@ class Form extends Component {
   handleSubmit = (event) => {
     event.preventDefault();
     const name = this.state.name;
-    if (this.props.contacts.items.some((elem) => elem.name === name)) {
-      // console.log(
-      //   this.state.contacts.some((elem) => elem.name === name)
-      // );
+    if (this.props.items.some((elem) => elem.name === name)) {
       window.alert(`${name} is already in contacts`);
       this.reset();
       return;
@@ -36,14 +33,7 @@ class Form extends Component {
       name: this.state.name,
       number: this.state.number,
     });
-    // store.dispatch(
-    //   addContact({
-    //     id: uuidv4(),
-    //     name: this.state.name,
-    //     number: this.state.number,
-    //   })
-    // );
-    // this.props.onSubmit(this.state);
+
     this.reset();
   };
   reset = () => {
@@ -88,9 +78,9 @@ class Form extends Component {
     );
   }
 }
-const mapStateToProps = (state) => {
+const mapStateToProps = ({ contacts: { items } }) => {
   return {
-    contacts: state.contacts,
+    items,
   };
 };
 const mapDispatchToProps = (dispatch) => {
